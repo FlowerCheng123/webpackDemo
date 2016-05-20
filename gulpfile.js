@@ -16,7 +16,8 @@ var reloadScripts = [
   'css/**/*.css',
   'css/*.css',
   '*.html',
-  '**/**/*.html'
+  '**/**/*.html',
+  'dist/**/*.js'
 ];
 // 监视文件改动并重新载入
 gulp.task('serve', function() {
