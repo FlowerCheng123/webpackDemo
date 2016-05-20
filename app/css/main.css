@@ -1,0 +1,16 @@
+*{
+	margin: 0px;
+	padding: 0px;
+}
+
+.box{
+	width: 200px;
+	height: 200px;
+	margin: 0 auto;
+	background: #7b37a6;
+	margin-top: 100px;
+	border:1px solid;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box; 
+	-webkit-box-sizing:border-box;
+}

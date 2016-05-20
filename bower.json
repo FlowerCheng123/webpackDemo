@@ -1,0 +1,22 @@
+{
+  "name": "pier_web",
+  "version": "1.0.0",
+  "homepage": "https://github.com/Pierup/pier_web",
+  "authors": [
+    "Cong Cheng <cheng_cong123@163.com>"
+  ],
+  "description": "Pierup Home Page",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+
+  },
+  "devDependencies": {
+  }
+}
