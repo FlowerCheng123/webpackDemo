@@ -6,8 +6,11 @@ var reload = browserSync.reload;
 var webpackConfig = require('./webpack.config.js');
 var gutil = require('gulp-util');
 var webpack = require('webpack');
+var path = require('path');
+var fs = require('fs');
+var srcDir = path.resolve(process.cwd(), 'app');
 
-
+var myConfig, devCompiler;
 var reloadScripts = [
   'asset/**/*.js',
   'asset/*.js',
@@ -19,32 +22,33 @@ var reloadScripts = [
   '**/**/*.html',
   'dist/**/*.js'
 ];
+
+var webpackScripts = [
+  'component/**/*.js',
+  'js/**/*.js'
+]; 
+
+function webpacking() {
+  myConfig = Object.create(webpackConfig);
+  devCompiler = webpack(myConfig);
+  devCompiler.run(function(err, stats) {
+      if(err) throw new gutil.PluginError("webpack:build-js", err);
+      gutil.log("[webpack:build-js]", stats.toString({
+          colors: true
+      }));
+  });
+}
 // 监视文件改动并重新载入
-gulp.task('serve', function() {
+gulp.task('serve', function(){
   browserSync({
     server: {
       baseDir: 'app',
     }
   });
-
-  gulp.watch(reloadScripts, {cwd: 'app'}, reload);
 });
 
+gulp.task( 'webpack', webpacking )
 
-
-gulp.task( 'Flower', function(){
-	var deferred = Q.defer();
-	exec('jekyll build', function(err) {
-	    if (err) return ; // 返回 error
-	    // cb(); // 完成 task
-	    console.log('aaaaaaaaaaaaaaa');
-    });
-	    // 执行异步的操作
-	setTimeout(function() {
-	    deferred.resolve();
-	}, 3000);
-	return deferred.promise;
-})
 
 gulp.task('md5:js', function (done) {
     gulp.src('dist/js/*.js')
@@ -53,18 +57,12 @@ gulp.task('md5:js', function (done) {
         .on('end', done);
 }); 
 
-gulp.task('webpack', function () {
-    var myConfig = Object.create(webpackConfig);
-    var devCompiler = webpack(myConfig);
-    devCompiler.run(function(err, stats) {
-        if(err) throw new gutil.PluginError("webpack:build-js", err);
-        gutil.log("[webpack:build-js]", stats.toString({
-            colors: true
-        }));
-    });
-});
+gulp.task( 'watcher', function(){
+  gulp.watch(reloadScripts, {cwd: 'app'}, reload);
+  gulp.watch(webpackScripts, {cwd: 'app'}, webpacking);
+})
 
-gulp.task('default', ['webpack','serve'], function() {
+gulp.task('default', ['webpack','watcher', 'serve'], function() {
   // 将你的默认的任务代码放在这
   console.log('Gulp starting ……^^………………^^……………………');
 });

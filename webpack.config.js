@@ -9,18 +9,17 @@ var srcDir = path.resolve(process.cwd(), 'app');
 //获取多页面的每个入口文件，用于配置中的entry
 function getEntry() {
     var jsPath = path.resolve(srcDir, 'js');
-    
     var dirs = fs.readdirSync(jsPath);
     var matchs = [], files = {};
-    console.log('dirs', dirs);
+    // console.log('dirs', dirs);
     dirs.forEach(function (item) {
         matchs = item.match(/(.+)\.js$/);
-        console.log(matchs);
+        // console.log(matchs);
         if (matchs) {
             files[matchs[1]] = path.resolve(srcDir, 'js', item);
         }
     });
-    console.log('jjjjjjj',JSON.stringify(files));
+    // console.log('jjjjjjj',JSON.stringify(files));
     return files;
 }
 
