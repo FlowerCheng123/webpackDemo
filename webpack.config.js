@@ -10,24 +10,24 @@ var srcDir = path.resolve(process.cwd(), 'app');
 function getEntry() {
     var jsPath = path.resolve(srcDir, 'js');
     var dirs = fs.readdirSync(jsPath);
-    var matchs = [], files = {};
-    // console.log('dirs', dirs);
+    var matchs = [], files = [];
     dirs.forEach(function (item) {
         matchs = item.match(/(.+)\.js$/);
         // console.log(matchs);
         if (matchs) {
-            files[matchs[1]] = path.resolve(srcDir, 'js', item);
+            files.push( path.resolve(srcDir, 'js', item) );
         }
     });
-    // console.log('jjjjjjj',JSON.stringify(files));
     return files;
 }
 
 module.exports = {
-    devtool: "source-map",    //生成sourcemap,便于开发调试
-    entry: getEntry(),         //获取项目入口js文件
+    // devtool: "source-map",    //生成sourcemap,便于开发调试
+    entry: {
+      app: ['./app/js/router.js']
+    },//getEntry(),         
     output: {
-      path: path.join(__dirname, "app/dist/js/"), //文件输出目录
+      path: path.resolve(__dirname, "app/dist/js"), //文件输出目录
       publicPath: "app/dist/js/",        //用于配置文件发布路径，如CDN或本地服务器
       filename: "bundles.js",        //根据入口文件输出的对应多个文件名
     },
@@ -37,6 +37,7 @@ module.exports = {
       ],
       //各种加载器，即让各种文件格式可用require引用
       loaders: [
+        { test: /\.jsx$/, loader: 'react-hot'},
         { test: /\.js$/, loader: 'babel', query: {
             presets: ['react', 'es2015']
           } 
@@ -55,12 +56,7 @@ module.exports = {
       }
     },
     plugins: [
-        //提供全局的变量，在模块中使用无需用require引入
-        new webpack.ProvidePlugin({
-            jQuery: "jquery",
-            $: "jquery",
-            // nie: "nie"
-        }),
+        new webpack.HotModuleReplacementPlugin(),
         //将公共代码抽离出来合并为一个文件
         new CommonsChunkPlugin('common.js'),
         //js文件的压缩
@@ -68,6 +64,7 @@ module.exports = {
             compress: {
                 warnings: false
             }
-        })
+        }),
+        new webpack.NoErrorsPlugin()
     ]
 };
