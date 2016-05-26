@@ -3,11 +3,14 @@ import { render } from 'react-dom'
 // using an ES6 transpiler, like babel
 // First we import some modules...
 import { Router, Route, IndexRoute, Link, hashHistory } from 'react-router'
+import Header from './components/Header.js'
 
+console.log('Header', Header);
 const App = React.createClass({
   render() {
     return (
       <div>
+        <Header></Header>
         <h1>App</h1>
         {/* change the <a>s to <Link>s */}
         <ul>
@@ -37,25 +40,10 @@ const About = React.createClass({
 
 const Inbox = React.createClass({
   render() {
-    return <h3>Inboxsdsdsada</h3>
+    return <h3>Inbox</h3>
   }
 })
 
-
-
-// Finally, we render a <Router> with some <Route>s.
-// It does all the fancy routing stuff for us.
-// render((
-//   <Router history={hashHistory}>
-//     <Route path="/" component={App}>
-//       <IndexRoute component={Home} />
-//       <Route path="about" component={About} />
-//       <Route path="inbox" component={Inbox} />
-//     </Route>
-//   </Router>
-// ), document.getElementById('bodyWrap'))
-// 
-// 
 const routes = {
   path: '/',
   component: App,

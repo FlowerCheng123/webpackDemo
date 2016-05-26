@@ -24,7 +24,7 @@ function getEntry() {
 module.exports = {
     // devtool: "source-map",    //生成sourcemap,便于开发调试
     entry: {
-      app: ['./app/js/router.js']
+      app: getEntry()
     },//getEntry(),         
     output: {
       path: path.resolve(__dirname, "app/dist/js"), //文件输出目录
